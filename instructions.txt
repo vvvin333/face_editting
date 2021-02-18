@@ -1,0 +1,8 @@
+# optional for search face and align
+python align_images.py raw_images/ aligned_images/
+
+# encode photo to latent vector
+python encode_images.py --optimizer=lbfgs --face_mask=True --iterations=50 --use_l1_penalty=0.2 --use_lpips_loss=0 --use_discriminator_loss=0 --output_video=True aligned_images/ generated_images/ latents/
+
+# edit photo in latent space with boundary 
+python move_images_in_latent_space.py -b boundaries/ -i latents/ --number_interpolation_steps=9 --morph_strength=3 
