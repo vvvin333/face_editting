@@ -1,9 +1,11 @@
 import os
+import sys
 import bz2
 import argparse
 from keras.utils import get_file
 from ffhq_dataset.face_alignment import image_align
 from ffhq_dataset.landmarks_detector import LandmarksDetector
+import multiprocessing
 
 LANDMARKS_MODEL_URL = 'http://dlib.net/files/shape_predictor_68_face_landmarks.dat.bz2'
 
@@ -23,7 +25,7 @@ if __name__ == "__main__":
     """
     parser = argparse.ArgumentParser(description='Align faces from input images', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument('raw_dir', help='Directory with raw images for face alignment')
-    parser.add_argument('aligned_dir', help='Directory for storing aligned_images')
+    parser.add_argument('aligned_dir', help='Directory for storing aligned images')
     parser.add_argument('--output_size', default=1024, help='The dimension of images for input to the model', type=int)
     parser.add_argument('--x_scale', default=1, help='Scaling factor for x dimension', type=float)
     parser.add_argument('--y_scale', default=1, help='Scaling factor for y dimension', type=float)
@@ -53,7 +55,7 @@ if __name__ == "__main__":
                     aligned_face_path = os.path.join(ALIGNED_IMAGES_DIR, face_img_name)
                     image_align(raw_img_path, aligned_face_path, face_landmarks, output_size=args.output_size, x_scale=args.x_scale, y_scale=args.y_scale, em_scale=args.em_scale, alpha=args.use_alpha)
                     print('Wrote result %s' % aligned_face_path)
-                except Exception as exception:
-                    print(f"Exception {exception} in face alignment!")
+                except:
+                    print("Exception in face alignment!")
         except:
             print("Exception in landmark detection!")
