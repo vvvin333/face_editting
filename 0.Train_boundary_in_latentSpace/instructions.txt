@@ -1,0 +1,4 @@
+# scores/scores.npy is a numpy array with scores along specified direction
+python train_boundary.py -o boundaries/ -c latent_representations/ -s scores/
+
+python edit.py -m stylegan_ffhq -b 'boundaries/pitch_boundary.npy' -s Wp -i 'latent_representations/w.npy' -o results/pitch --start_distance -3.00 --end_distance 3.00 --steps=10 
