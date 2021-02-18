@@ -2,6 +2,7 @@
 I reconstructed stylegan`s work from several repositories for my images, combine them, tried to find pitch_boundary (for pitch-axis) from several photos with my 'by-eye' scores.
 Added move_images_in_latent_space.py script. 
 [download pre-trained generator model](https://drive.google.com/uc?id=1MEGjdvVpUsu1jB4zrXZN7Y4kBBOzizDQ) to the models/ folder.
+See instructions.txt for run commands.
 
 
 ### Original Readme:
