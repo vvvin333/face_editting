@@ -4,7 +4,10 @@ import os
 import pickle
 import PIL.Image
 import numpy as np
-import dnnlib.tflib as tflib
+
+import config
+from dnnlib import tflib
+from dnnlib import util
 from encoder.generator_model import Generator
 
 """
@@ -60,8 +63,13 @@ def interpolate(latent_vector_name, direction_name, latent_vector, direction, co
 def main():
     args = parse_args()
     tflib.init_tf()
-    with open('models/karras2019stylegan-ffhq-1024x1024.pkl', 'rb') as f:
-        generator_network, discriminator_network, Gs_network = pickle.load(f)
+    if args.models == 'url':
+        with util.open_url('https://drive.google.com/uc?id=1MEGjdvVpUsu1jB4zrXZN7Y4kBBOzizDQ',
+                           cache_dir=config.cache_dir) as f:
+            generator_network, discriminator_network, Gs_network = pickle.load(f)
+    else:
+        with open('models/karras2019stylegan-ffhq-1024x1024.pkl', 'rb') as f:
+            generator_network, discriminator_network, Gs_network = pickle.load(f)
     generator = Generator(Gs_network, batch_size=1, randomize_noise=False)
     number_interpolation_steps = args.number_interpolation_steps
     morph_strength = args.morph_strength

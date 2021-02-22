@@ -18,22 +18,30 @@ import config
 #----------------------------------------------------------------------------
 # Helpers for loading and using pre-trained generators.
 
-url_ffhq        = 'https://drive.google.com/uc?id=1MEGjdvVpUsu1jB4zrXZN7Y4kBBOzizDQ' # karras2019stylegan-ffhq-1024x1024.pkl
-url_celebahq    = 'https://drive.google.com/uc?id=1MGqJl28pN4t7SAtSrPdSRJSQJqahkzUf' # karras2019stylegan-celebahq-1024x1024.pkl
-url_bedrooms    = 'https://drive.google.com/uc?id=1MOSKeGF0FJcivpBI7s63V9YHloUTORiF' # karras2019stylegan-bedrooms-256x256.pkl
-url_cars        = 'https://drive.google.com/uc?id=1MJ6iCfNtMIRicihwRorsM3b7mmtmK9c3' # karras2019stylegan-cars-512x384.pkl
-url_cats        = 'https://drive.google.com/uc?id=1MQywl0FNt6lHu8E_EUqnRbviagS7fbiJ' # karras2019stylegan-cats-256x256.pkl
+url_ffhq        = 'karras2019stylegan-ffhq-1024x1024.pkl' # 'https://drive.google.com/uc?id=1MEGjdvVpUsu1jB4zrXZN7Y4kBBOzizDQ'
+url_celebahq    = 'karras2019stylegan-celebahq-1024x1024.pkl' #  'https://drive.google.com/uc?id=1MGqJl28pN4t7SAtSrPdSRJSQJqahkzUf' #
+url_bedrooms    = 'karras2019stylegan-bedrooms-256x256.pkl' # 'https://drive.google.com/uc?id=1MOSKeGF0FJcivpBI7s63V9YHloUTORiF' #
+url_cars        = 'karras2019stylegan-cars-512x384.pkl' # 'https://drive.google.com/uc?id=1MJ6iCfNtMIRicihwRorsM3b7mmtmK9c3'
+url_cats        = 'karras2019stylegan-cats-256x256.pkl' # 'https://drive.google.com/uc?id=1MQywl0FNt6lHu8E_EUqnRbviagS7fbiJ'
 
 synthesis_kwargs = dict(output_transform=dict(func=tflib.convert_images_to_uint8, nchw_to_nhwc=True), minibatch_size=8)
 
 _Gs_cache = dict()
 
-def load_Gs(url):
+def load_Gs_from_url(url):
     if url not in _Gs_cache:
         with dnnlib.util.open_url(url, cache_dir=config.cache_dir) as f:
             _G, _D, Gs = pickle.load(f)
         _Gs_cache[url] = Gs
     return _Gs_cache[url]
+
+def load_Gs(name):
+    full_name = os.path.join('models', name)
+    with open(full_name, 'rb') as f:
+        print(f)
+        _G, _D, Gs = pickle.load(f)
+    return Gs
+
 
 #----------------------------------------------------------------------------
 # Figures 2, 3, 10, 11, 12: Multi-resolution grid of uncurated result images.
